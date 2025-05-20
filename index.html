@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Toroidal Core 계산기</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f4f6f8;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      color: #2c3e50;
+    }
+    img {
+      display: block;
+      margin: 0 auto 20px;
+      max-width: 300px;
+    }
+    .input-group {
+      margin: 10px 0;
+    }
+    label {
+      display: inline-block;
+      width: 160px;
+      text-align: right;
+      margin-right: 10px;
+      font-weight: 500;
+    }
+    input {
+      width: 100px;
+      padding: 5px;
+      text-align: right;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #1abc9c;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .result-box {
+      margin-top: 30px;
+      background: white;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      max-width: 700px;
+      min-height: 220px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+    }
+    .result-box p {
+      margin: 6px 0;
+      font-size: 16px;
+    }
+    .formula-box {
+      margin-top: 30px;
+      text-align: left;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      background: #fff;
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      box-shadow: none;
+    }
+    .formula-box h3 {
+      color: #2c3e50;
+      border-bottom: 1px solid #ddd;
+    }
+  </style>
+</head>
+<body>
+
+  <img src="diagram_toroid.png" alt="Toroidal Core Diagram">
+  <h1>Toroidal Core 계산기 (곡률 반영)</h1>
+
+  <div class="input-group"><label for="id">내경 ID (mm):</label><input type="number" id="id" value="15"></div>
+  <div class="input-group"><label for="od">외경 OD (mm):</label><input type="number" id="od" value="25"></div>
+  <div class="input-group"><label for="t">두께 t (mm):</label><input type="number" id="t" value="2"></div>
+  <div class="input-group"><label for="ur">상대 투자율 (μr):</label><input type="number" id="ur" value="100"></div>
+  <div class="input-group"><label for="n">턴 수 (N):</label><input type="number" id="n" value="10"></div>
+
+  <button onclick="calculate()">계산하기</button>
+
+  <div class="result-box" id="result"></div>
+
+  <div class="formula-box">
+    <h3>사용된 수식</h3>
+    <p><strong>단면적:</strong><br>
+      \( A_e = \frac{(OD - ID) \cdot t}{2} \)
+    </p>
+    <p><strong>평균 경로 길이:</strong><br>
+      \( L_e = \pi \cdot \frac{OD - ID}{\ln(OD / ID)} \)
+    </p>
+    <p><strong>코어 부피:</strong><br>
+      \( V_e = A_e \cdot L_e \)
+    </p>
+    <p><strong>AL 값:</strong><br>
+      \( AL = \mu_0 \cdot \mu_r \cdot \frac{A_e}{L_e} \cdot 10^6 \quad [\mu H/N^2] \)
+    </p>
+    <p><strong>인덕턴스:</strong><br>
+      \( L = AL \cdot N^2 \quad [\mu H] \)
+    </p>
+  </div>
+
+  <script>
+    function calculate() {
+      const IDmm = parseFloat(document.getElementById("id").value);
+      const ODmm = parseFloat(document.getElementById("od").value);
+      const tmm  = parseFloat(document.getElementById("t").value);
+      const ur = parseFloat(document.getElementById("ur").value);
+      const N = parseFloat(document.getElementById("n").value);
+
+      const μ0 = 4 * Math.PI * 1e-7;  // H/m
+
+      const ID = IDmm / 1000;
+      const OD = ODmm / 1000;
+      const t  = tmm  / 1000;
+
+      const Ae_m2 = ((OD - ID) * t) / 2;
+      const Le_m  = Math.PI * (OD - ID) / Math.log(OD / ID);
+      const Ve_m3 = Ae_m2 * Le_m;
+
+      const Ae_mm2 = Ae_m2 * 1e6;
+      const Le_mm  = Le_m * 1000;
+      const Ve_mm3 = Ve_m3 * 1e9;
+
+      const AL_nH = (μ0 * ur * Ae_m2 / Le_m) * 1e9;
+      const AL_uH = AL_nH / 1000;
+      const L = (AL_uH * N * N);
+
+      document.getElementById("result").innerHTML = `
+        <p><strong>Le (자기 경로 길이):</strong> ${Le_mm.toFixed(2)} mm</p>
+        <p><strong>Ae (단면적):</strong> ${Ae_mm2.toFixed(2)} mm²</p>
+        <p><strong>Ve (부피):</strong> ${Ve_mm3.toFixed(2)} mm³</p>
+        <p><strong>AL 값:</strong> ${AL_uH.toFixed(4)} µH/N²</p>
+        <p><strong>인덕턴스:</strong> ${L.toFixed(2)} µH (N=${N})</p>
+      `;
+    }
+  </script>
+
+</body>
+</html>
