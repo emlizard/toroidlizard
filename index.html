@@ -2,120 +2,147 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Toroidal Core Calculator</title>
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script id="MathJax-script" async
-    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
+    :root {
+      --gap: 1rem;
+      --bg: #f4f6f8;
+      --card-bg: #fff;
+      --border: #ccc;
+      --primary: #2c3e50;
+      --accent: #1abc9c;
+      --radius: 8px;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
     body {
+      margin: 0;
+      padding: 0;
       font-family: 'Poppins', sans-serif;
-      background-color: #f4f6f8;
-      padding: 20px;
+      background: var(--bg);
+      color: var(--primary);
       text-align: center;
+      padding: var(--gap);
     }
     h1 {
-      color: #2c3e50;
-      margin-bottom: 20px;
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+      margin-bottom: var(--gap);
     }
     img {
-      display: block;
-      margin: 0 auto 20px;
-      max-width: 300px;
+      max-width: 100%;
+      height: auto;
+      margin-bottom: var(--gap);
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--gap);
+      max-width: 800px;
+      margin: 0 auto;
     }
     .input-group {
-      margin: 10px 0;
-    }
-    label {
-      display: inline-block;
-      width: 160px;
-      text-align: right;
-      margin-right: 10px;
-      font-weight: 500;
-    }
-    input {
-      width: 100px;
-      padding: 5px;
-      text-align: right;
-    }
-    button {
-      margin-top: 20px;
-      padding: 10px 20px;
-      font-size: 16px;
-      background-color: #1abc9c;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .result-box {
-      margin-top: 30px;
-      background: white;
-      padding: 20px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      max-width: 700px;
-      margin-left: auto;
-      margin-right: auto;
-      text-align: left;
       display: flex;
       flex-direction: column;
-      justify-content: space-around;
+      align-items: flex-start;
+    }
+    label {
+      margin-bottom: 0.25rem;
+      font-weight: 500;
+      text-align: left;
+      width: 100%;
+    }
+    input {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 1rem;
+    }
+    .button-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: var(--gap);
+      margin: var(--gap) 0;
+    }
+    button {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      flex: 1 1 200px;
+      max-width: 250px;
+    }
+    .result-box, .formula-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: var(--gap);
+      margin: var(--gap) auto;
+      max-width: 800px;
+      width: 100%;
+      text-align: left;
     }
     .result-box p {
-      margin: 6px 0;
-      font-size: 16px;
-    }
-    .formula-box {
-      margin-top: 30px;
-      text-align: left;
-      max-width: 700px;
-      margin-left: auto;
-      margin-right: auto;
-      background: #fff;
-      padding: 15px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      box-shadow: none;
+      margin: 0.5rem 0;
+      font-size: clamp(1rem, 2.5vw, 1.1rem);
     }
     .formula-box h3 {
-      color: #2c3e50;
-      border-bottom: 1px solid #ddd;
+      margin-top: 0;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.5rem;
+      font-size: 1.25rem;
+    }
+    .formula-box p {
+      margin: 0.5rem 0;
     }
   </style>
 </head>
 <body>
-  <!-- Title moved above image -->
   <h1>Toroidal Core Calculator</h1>
   <img src="https://emlizard.github.io/main-page/images/diagram_toroid.png" alt="Toroidal Core Diagram">
 
-  <div class="input-group"><label for="id">ID (mm):</label><input type="number" id="id" value="15"></div>
-  <div class="input-group"><label for="od">OD (mm):</label><input type="number" id="od" value="25"></div>
-  <div class="input-group"><label for="t">t (mm):</label><input type="number" id="t" value="2"></div>
-  <div class="input-group"><label for="ur">μr:</label><input type="number" id="ur" value="100"></div>
-  <div class="input-group"><label for="n">N:</label><input type="number" id="n" value="10"></div>
+  <div class="form-grid">
+    <div class="input-group">
+      <label for="id">ID (mm):</label>
+      <input type="number" id="id" value="15">
+    </div>
+    <div class="input-group">
+      <label for="od">OD (mm):</label>
+      <input type="number" id="od" value="25">
+    </div>
+    <div class="input-group">
+      <label for="t">t (mm):</label>
+      <input type="number" id="t" value="2">
+    </div>
+    <div class="input-group">
+      <label for="ur">μr:</label>
+      <input type="number" id="ur" value="100">
+    </div>
+    <div class="input-group">
+      <label for="n">N:</label>
+      <input type="number" id="n" value="10">
+    </div>
+  </div>
 
-  <button onclick="calculate()">Calculate</button>
+  <div class="button-group">
+    <button onclick="calculate()">Calculate</button>
+  </div>
 
   <div class="result-box" id="result"></div>
 
   <div class="formula-box">
     <h3>Formulas</h3>
-    <p><strong>Effective Area:</strong><br>
-      \( A_e = \frac{(OD - ID) \cdot t}{2} \)
-    </p>
-    <p><strong>Effective Length:</strong><br>
-      \( L_e = \pi \cdot \frac{OD - ID}{\ln(OD / ID)} \)
-    </p>
-    <p><strong>Effective Core Volume:</strong><br>
-      \( V_e = A_e \cdot L_e \)
-    </p>
-    <p><strong>AL (Inductance per turn):</strong><br>
-      \( AL = \mu_0 \cdot \mu_r \cdot \frac{A_e}{L_e} \cdot 10^6 \quad [\mu H/N^2] \)
-    </p>
-    <p><strong>Self-Inductance:</strong><br>
-      \( L = AL \cdot N^2 \quad [\mu H] \)
-    </p>
+    <p><strong>Effective Area:</strong><br>\( A_e = \frac{(OD - ID) \cdot t}{2} \)</p>
+    <p><strong>Effective Length:</strong><br>\( L_e = \pi \cdot \frac{OD - ID}{\ln(OD / ID)} \)</p>
+    <p><strong>Effective Core Volume:</strong><br>\( V_e = A_e \cdot L_e \)</p>
+    <p><strong>AL (Inductance per turn):</strong><br>\( AL = \mu_0 \cdot \mu_r \cdot \frac{A_e}{L_e} \cdot 10^6 \)[\mu H/N^2]</p>
+    <p><strong>Self-Inductance:</strong><br>\( L = AL \cdot N^2 \)[\mu H]</p>
   </div>
 
   <script>
@@ -123,11 +150,10 @@
       const IDmm = parseFloat(document.getElementById("id").value);
       const ODmm = parseFloat(document.getElementById("od").value);
       const tmm  = parseFloat(document.getElementById("t").value);
-      const ur = parseFloat(document.getElementById("ur").value);
-      const N = parseFloat(document.getElementById("n").value);
+      const ur   = parseFloat(document.getElementById("ur").value);
+      const N    = parseFloat(document.getElementById("n").value);
 
-      const μ0 = 4 * Math.PI * 1e-7;  // H/m
-
+      const μ0 = 4 * Math.PI * 1e-7;
       const ID = IDmm / 1000;
       const OD = ODmm / 1000;
       const t  = tmm  / 1000;
@@ -137,22 +163,21 @@
       const Ve_m3 = Ae_m2 * Le_m;
 
       const Ae_mm2 = Ae_m2 * 1e6;
-      const Le_mm  = Le_m * 1000;
+      const Le_mm  = Le_m  * 1000;
       const Ve_mm3 = Ve_m3 * 1e9;
 
       const AL_nH = (μ0 * ur * Ae_m2 / Le_m) * 1e9;
       const AL_uH = AL_nH / 1000;
-      const L = (AL_uH * N * N);
+      const L = AL_uH * N * N;
 
       document.getElementById("result").innerHTML = `
         <p><strong>Le :</strong> ${Le_mm.toFixed(2)} mm</p>
         <p><strong>Ae :</strong> ${Ae_mm2.toFixed(2)} mm²</p>
         <p><strong>Ve :</strong> ${Ve_mm3.toFixed(2)} mm³</p>
         <p><strong>AL :</strong> ${AL_uH.toFixed(4)} µH/N²</p>
-        <p><strong>L:</strong> ${L.toFixed(2)} µH (N=${N})</p>
+        <p><strong>L  :</strong> ${L.toFixed(2)} µH (N=${N})</p>
       `;
     }
   </script>
-
 </body>
 </html>
