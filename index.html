@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Toroidal Core 계산기</title>
+  <title>Toroidal Core Calculator</title>
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script id="MathJax-script" async
     src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
@@ -87,33 +87,33 @@
 <body>
 
   <img src="https://emlizard.github.io/main-page/images/diagram_toroid.png" alt="Toroidal Core Diagram">
-  <h1>Toroidal Core 계산기 (곡률 반영)</h1>
+  <h1>Toroidal Core Calculator</h1>
 
-  <div class="input-group"><label for="id">내경 ID (mm):</label><input type="number" id="id" value="15"></div>
-  <div class="input-group"><label for="od">외경 OD (mm):</label><input type="number" id="od" value="25"></div>
-  <div class="input-group"><label for="t">두께 t (mm):</label><input type="number" id="t" value="2"></div>
-  <div class="input-group"><label for="ur">상대 투자율 (μr):</label><input type="number" id="ur" value="100"></div>
-  <div class="input-group"><label for="n">턴 수 (N):</label><input type="number" id="n" value="10"></div>
+  <div class="input-group"><label for="id">ID (mm):</label><input type="number" id="id" value="15"></div>
+  <div class="input-group"><label for="od">OD (mm):</label><input type="number" id="od" value="25"></div>
+  <div class="input-group"><label for="t">t (mm):</label><input type="number" id="t" value="2"></div>
+  <div class="input-group"><label for="ur">μr:</label><input type="number" id="ur" value="100"></div>
+  <div class="input-group"><label for="n">N:</label><input type="number" id="n" value="10"></div>
 
-  <button onclick="calculate()">계산하기</button>
+  <button onclick="calculate()">Calculate</button>
 
   <div class="result-box" id="result"></div>
 
   <div class="formula-box">
-    <h3>사용된 수식</h3>
-    <p><strong>단면적:</strong><br>
+    <h3>Formulars</h3>
+    <p><strong>Effective Area:</strong><br>
       \( A_e = \frac{(OD - ID) \cdot t}{2} \)
     </p>
-    <p><strong>평균 경로 길이:</strong><br>
+    <p><strong>Effective Length:</strong><br>
       \( L_e = \pi \cdot \frac{OD - ID}{\ln(OD / ID)} \)
     </p>
-    <p><strong>코어 부피:</strong><br>
+    <p><strong>Effective Core Volume:</strong><br>
       \( V_e = A_e \cdot L_e \)
     </p>
-    <p><strong>AL 값:</strong><br>
+    <p><strong>AL (Inductance per turn):</strong><br>
       \( AL = \mu_0 \cdot \mu_r \cdot \frac{A_e}{L_e} \cdot 10^6 \quad [\mu H/N^2] \)
     </p>
-    <p><strong>인덕턴스:</strong><br>
+    <p><strong>Self-Inductance:</strong><br>
       \( L = AL \cdot N^2 \quad [\mu H] \)
     </p>
   </div>
@@ -145,11 +145,11 @@
       const L = (AL_uH * N * N);
 
       document.getElementById("result").innerHTML = `
-        <p><strong>Le (자기 경로 길이):</strong> ${Le_mm.toFixed(2)} mm</p>
-        <p><strong>Ae (단면적):</strong> ${Ae_mm2.toFixed(2)} mm²</p>
-        <p><strong>Ve (부피):</strong> ${Ve_mm3.toFixed(2)} mm³</p>
-        <p><strong>AL 값:</strong> ${AL_uH.toFixed(4)} µH/N²</p>
-        <p><strong>인덕턴스:</strong> ${L.toFixed(2)} µH (N=${N})</p>
+        <p><strong>Le :</strong> ${Le_mm.toFixed(2)} mm</p>
+        <p><strong>Ae :</strong> ${Ae_mm2.toFixed(2)} mm²</p>
+        <p><strong>Ve :</strong> ${Ve_mm3.toFixed(2)} mm³</p>
+        <p><strong>AL :</strong> ${AL_uH.toFixed(4)} µH/N²</p>
+        <p><strong>L:</strong> ${L.toFixed(2)} µH (N=${N})</p>
       `;
     }
   </script>
