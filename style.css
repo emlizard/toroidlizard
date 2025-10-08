@@ -100,14 +100,21 @@
     }
 
     .header-content {
-      max-width: 800px;
+      max-width: 1200px;
       margin: 0 auto;
       padding: 0 1rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-.back-btn {
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .back-btn {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
@@ -132,7 +139,8 @@
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-.theme-toggle {
+
+    .theme-toggle {
       background: none;
       border: 2px solid var(--border);
       border-radius: 50%;
